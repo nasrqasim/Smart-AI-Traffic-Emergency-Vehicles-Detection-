@@ -1,0 +1,2 @@
+timestamp,sim_time,controller,active_rule,phase,duration,density_N,density_S,density_E,density_W,avg_queue,avg_wait_s,throughput,notes
+2026-11-03 19:24:36,10,vision_actuated,RULE_1_EMERGENCY_PREEMPTION (S),S,20,0.1,0.4,0.0,0.0,14.2,18.5,5,

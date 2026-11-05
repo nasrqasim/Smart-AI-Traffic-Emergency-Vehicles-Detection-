@@ -1,0 +1,23 @@
+[
+  {
+    "controller": "fixed_time",
+    "avg_wait_time_s": 63.21,
+    "avg_queue_length_vehicles": 159.6,
+    "avg_throughput_vehicles": 473.3,
+    "episodes": 3
+  },
+  {
+    "controller": "actuated",
+    "avg_wait_time_s": 59.67,
+    "avg_queue_length_vehicles": 199.92,
+    "avg_throughput_vehicles": 259.3,
+    "episodes": 3
+  },
+  {
+    "controller": "dqn",
+    "avg_wait_time_s": 54.01,
+    "avg_queue_length_vehicles": 214.63,
+    "avg_throughput_vehicles": 127.7,
+    "episodes": 3
+  }
+]

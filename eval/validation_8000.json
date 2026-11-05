@@ -1,0 +1,158 @@
+[
+  {
+    "controller": "fixed_time",
+    "avg_wait_time_s": 118.73,
+    "avg_queue_length_vehicles": 77.14,
+    "avg_throughput_vehicles": 328.0,
+    "episodes": 3,
+    "avg_active_at_end": 221.0,
+    "avg_pending_at_end": 61.3,
+    "total_collision_vehicle_events": 0,
+    "total_teleported_vehicles": 0,
+    "episode_results": [
+      {
+        "avg_queue_length": 46.09888888888889,
+        "avg_wait_time_s": 89.87908496732027,
+        "throughput_vehicles": 306,
+        "sim_time_s": 900,
+        "departed_vehicles": 463,
+        "active_vehicles": 157,
+        "pending_vehicles": 0,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 41489.0,
+        "emergency_preemptions": 4
+      },
+      {
+        "avg_queue_length": 95.45222222222222,
+        "avg_wait_time_s": 133.45345345345345,
+        "throughput_vehicles": 333,
+        "sim_time_s": 900,
+        "departed_vehicles": 594,
+        "active_vehicles": 261,
+        "pending_vehicles": 131,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 85907.0,
+        "emergency_preemptions": 5
+      },
+      {
+        "avg_queue_length": 89.87777777777778,
+        "avg_wait_time_s": 132.84927536231885,
+        "throughput_vehicles": 345,
+        "sim_time_s": 900,
+        "departed_vehicles": 590,
+        "active_vehicles": 245,
+        "pending_vehicles": 53,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 80890.0,
+        "emergency_preemptions": 11
+      }
+    ]
+  },
+  {
+    "controller": "actuated",
+    "avg_wait_time_s": 103.27,
+    "avg_queue_length_vehicles": 70.51,
+    "avg_throughput_vehicles": 354.0,
+    "episodes": 3,
+    "avg_active_at_end": 208.3,
+    "avg_pending_at_end": 48.0,
+    "total_collision_vehicle_events": 0,
+    "total_teleported_vehicles": 0,
+    "episode_results": [
+      {
+        "avg_queue_length": 39.14333333333333,
+        "avg_wait_time_s": 74.80981595092024,
+        "throughput_vehicles": 326,
+        "sim_time_s": 900,
+        "departed_vehicles": 463,
+        "active_vehicles": 137,
+        "pending_vehicles": 0,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 35229.0,
+        "emergency_preemptions": 5
+      },
+      {
+        "avg_queue_length": 90.55444444444444,
+        "avg_wait_time_s": 118.86908077994428,
+        "throughput_vehicles": 359,
+        "sim_time_s": 900,
+        "departed_vehicles": 613,
+        "active_vehicles": 254,
+        "pending_vehicles": 112,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 81499.0,
+        "emergency_preemptions": 5
+      },
+      {
+        "avg_queue_length": 81.83666666666667,
+        "avg_wait_time_s": 116.11671087533156,
+        "throughput_vehicles": 377,
+        "sim_time_s": 900,
+        "departed_vehicles": 611,
+        "active_vehicles": 234,
+        "pending_vehicles": 32,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 73653.0,
+        "emergency_preemptions": 12
+      }
+    ]
+  },
+  {
+    "controller": "dqn",
+    "avg_wait_time_s": 130.56,
+    "avg_queue_length_vehicles": 90.1,
+    "avg_throughput_vehicles": 294.3,
+    "episodes": 3,
+    "avg_active_at_end": 232.3,
+    "avg_pending_at_end": 83.7,
+    "total_collision_vehicle_events": 0,
+    "total_teleported_vehicles": 0,
+    "episode_results": [
+      {
+        "avg_queue_length": 61.714444444444446,
+        "avg_wait_time_s": 91.01960784313725,
+        "throughput_vehicles": 255,
+        "sim_time_s": 900,
+        "departed_vehicles": 443,
+        "active_vehicles": 188,
+        "pending_vehicles": 20,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 55543.0,
+        "emergency_preemptions": 5
+      },
+      {
+        "avg_queue_length": 103.45333333333333,
+        "avg_wait_time_s": 142.64634146341464,
+        "throughput_vehicles": 328,
+        "sim_time_s": 900,
+        "departed_vehicles": 586,
+        "active_vehicles": 258,
+        "pending_vehicles": 139,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 93108.0,
+        "emergency_preemptions": 23
+      },
+      {
+        "avg_queue_length": 105.1288888888889,
+        "avg_wait_time_s": 158.02,
+        "throughput_vehicles": 300,
+        "sim_time_s": 900,
+        "departed_vehicles": 551,
+        "active_vehicles": 251,
+        "pending_vehicles": 92,
+        "teleported_vehicles": 0,
+        "collision_vehicle_events": 0,
+        "total_queue_vehicle_seconds": 94616.0,
+        "emergency_preemptions": 65
+      }
+    ]
+  }
+]

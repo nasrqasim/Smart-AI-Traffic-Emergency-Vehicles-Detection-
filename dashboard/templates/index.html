@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Flow / AI Smart Traffic Signal System</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <b>F</b>
+    <div>flow<small>AI TRAFFIC INTELLIGENCE &amp; VISION PREEMPTION</small></div>
+  </div>
+  <nav>Central Intersection &nbsp; / &nbsp; 4-Way Intelligent Digital Twin &nbsp; / &nbsp; Computer Vision</nav>
+  <span id="connection" class="live">CONNECTING</span>
+</header>
+
+<main>
+  <div class="heading">
+    <div>
+      <div class="eyebrow">FINAL YEAR PROJECT / AUTONOMOUS TRAFFIC MANAGEMENT</div>
+      <h1>Intelligent Streets.<br><span>Real-Time Vision &amp; Priority Control.</span></h1>
+      <p>Autonomous camera-actuated signal control with emergency preemption, South line congestion priority, and 60s traditional fallback.</p>
+    </div>
+    <div class="clock">
+      <div class="system-pill"><i></i> AUTONOMOUS HIERARCHY ACTIVE</div>
+      <small>SIMULATION CLOCK</small>
+      <strong id="clock">00:00</strong>
+    </div>
+  </div>
+
+  <!-- Real-time Active Priority Rule Banner -->
+  <div id="ruleBanner" class="rule-banner fallback-60s">
+    <div style="display:flex; align-items:center; gap:14px;">
+      <span id="ruleTag" class="rule-tag">RULE 3: FALLBACK</span>
+      <span id="ruleDesc" class="rule-desc">Traditional Fallback Cycle · 60s rotation on low traffic</span>
+    </div>
+    <div id="ruleMeta" class="rule-meta">South Line Multiplier: 1.6x | Emergency Zone: 200m</div>
+  </div>
+
+  <!-- Key Metrics Bar -->
+  <section class="stats">
+    <article>
+      <label>COMPLETED TRIPS</label>
+      <strong id="throughput">0</strong>
+      <small>Vehicles reaching destination</small>
+    </article>
+    <article>
+      <label>AVERAGE QUEUE</label>
+      <strong><b id="queue">0.0</b><em> veh</em></strong>
+      <small>Across all 8 incoming lanes</small>
+    </article>
+    <article>
+      <label>COMPLETED TRIP WAIT</label>
+      <strong><b id="wait">0.0</b><em> sec</em></strong>
+      <small>Excludes in-flight vehicles</small>
+    </article>
+    <article>
+      <label>VEHICLES IN NETWORK</label>
+      <strong id="active">0</strong>
+      <small><span id="pending">0</span> waiting to enter</small>
+    </article>
+  </section>
+
+  <div class="workspace">
+    <!-- Main Center Panel: Live Scene & Camera View -->
+    <section class="map-panel">
+      <div class="panel-head">
+        <span>● &nbsp; Real-Time Intersection View <small id="viewBadge">DUAL VIEW: DIGITAL TWIN + VISION</small></span>
+        <div class="scene-toolbar">
+          <label>View Mode 
+            <select id="viewMode" aria-label="View mode">
+              <option value="dual" selected>Dual View (Twin + Camera)</option>
+              <option value="twin">Digital Twin Only</option>
+              <option value="camera">Live Camera Only</option>
+            </select>
+          </label>
+          <label>Atmosphere 
+            <select id="theme" aria-label="Scene atmosphere">
+              <option value="night">Midnight</option>
+              <option value="day">Daylight</option>
+            </select>
+          </label>
+          <label>Zoom 
+            <select id="zoom" aria-label="Map view">
+              <option value="180">Junction</option>
+              <option value="520">Full network</option>
+            </select>
+          </label>
+          <button id="fullscreen" title="Expand view" aria-label="Expand intersection">&#x26F6;</button>
+        </div>
+      </div>
+
+      <!-- Live 4-Approach Signal State Board -->
+      <div class="signal-board" id="signals" aria-label="Live status of all four traffic signals"></div>
+
+      <!-- Main Visual Scene Container -->
+      <div id="sceneContainer" class="scene scene-dual">
+        <!-- 2D Canvas Digital Twin -->
+        <div id="twinWrapper" style="position:relative; width:100%; height:100%;">
+          <canvas id="scene" aria-label="Live traffic simulation using real SUMO vehicle positions"></canvas>
+          <div class="map-caption">
+            <span class="location-icon">&#x2316;</span> CENTRAL JUNCTION
+            <small>Protected movements &nbsp;/&nbsp; One green approach</small>
+          </div>
+          <div class="compass">N<br>&uarr;</div>
+          <div class="map-key">
+            ● Passenger &nbsp; <span>● Bus / truck</span> &nbsp; <b>● Emergency</b>
+          </div>
+          <div class="scene-status" id="sceneStatus">CONNECTING TO SIMULATOR</div>
+        </div>
+
+        <!-- Live YOLOv8 Camera Stream -->
+        <div id="cameraWrapper" class="camera-container">
+          <img id="cameraFeed" src="/api/video_feed" alt="Live YOLOv8 Traffic Camera Feed">
+          <div class="camera-badge">
+            CAMERA FEED: <b>YOLOv8 + 4-ROI SENSING</b>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transport Simulation Controls -->
+      <div class="transport">
+        <button id="pause">Pause</button>
+        <label>Playback 
+          <select id="speed" aria-label="Playback speed">
+            <option value="0.25">0.25 (Very Slow)</option>
+            <option value="0.5" selected>0.5 (Smooth / Slow)</option>
+            <option value="1">1 (Real Time)</option>
+            <option value="2">2 (Fast)</option>
+            <option value="5">5 (Fastest)</option>
+          </select> &times;
+        </label>
+        <span id="stage">Waiting for simulator</span>
+        <button id="reset">Reset episode &#x21bb;</button>
+      </div>
+    </section>
+
+    <!-- Right Sidebar: Signal Command, Camera Feeds, Scenario Lab -->
+    <aside>
+      <!-- Controller Command Panel -->
+      <section class="panel">
+        <div class="eyebrow">SIGNAL COMMAND &amp; HIERARCHY</div>
+        <h2>Controller Architecture</h2>
+        <label class="field">Active Controller
+          <select id="controller">
+            <option value="vision_actuated" selected>Vision AI · 3-Tier Priority Controller</option>
+            <option value="actuated">Adaptive · Density Actuated</option>
+            <option value="dqn">AI · Trained DQN</option>
+            <option value="fixed_time">Baseline · Fixed Cycle (20s)</option>
+          </select>
+        </label>
+        <p class="hint" id="policyNote">Rule 1: Emergency Preemption | Rule 2: South Priority Extension | Rule 3: 60s Traditional Fallback.</p>
+        
+        <div class="phase-card">
+          <span id="phase">NORTH / SOUTH</span>
+          <strong id="countdown">&mdash;</strong>
+          <small id="signalStatus">Awaiting live signal state</small>
+        </div>
+
+        <div id="emergencyAlert" class="notice" hidden>
+          &#9888; Emergency vehicle detected! Priority preemption active with yellow/all-red clearance.
+        </div>
+
+        <div class="safety">
+          <span>Collision vehicle events <b id="collisions">0</b></span>
+          <span>Teleported vehicles <b id="teleports">0</b></span>
+        </div>
+      </section>
+
+      <!-- Camera Perception & Approach Density -->
+      <section class="panel">
+        <div class="eyebrow">VISION PERCEPTION (YOLOv8)</div>
+        <h2>Camera Approach Density</h2>
+                <!-- Live Camera Source Selector & Connect -->
+        <div style="margin-bottom:12px; background:#122027; border:1px solid #284148; border-radius:8px; padding:12px;">
+          <label style="font-size:10px; color:#8fa8ae; display:block; margin-bottom:6px;">Camera Input Source:</label>
+          <div style="display:flex; gap:6px;">
+            <select id="camSourceSelect" style="flex:1; font-size:11px; padding:6px; background:#182e36; color:#a5f3ce; border:1px solid #36555f; border-radius:6px;">
+              <option value="webcam">💻 My Laptop / USB Webcam</option>
+              <option value="sample" selected>🎥 Sample Traffic Footage</option>
+              <option value="rtsp">🌐 External CCTV / IP Stream (RTSP)</option>
+            </select>
+            <button id="btnToggleCamera" style="background:#205244; color:#a5f3ce; border:1px solid #3c7d6b; border-radius:6px; padding:6px 12px; font-size:11px; font-weight:600; cursor:pointer;">Start Camera</button>
+          </div>
+          <div id="rtspInputBox" style="display:none; margin-top:8px;">
+            <input type="text" id="rtspUrl" placeholder="rtsp://192.168.1.100:554/stream" style="width:100%; box-sizing:border-box; font-size:11px; padding:6px; background:#0d181c; color:#fff; border:1px solid #36555f; border-radius:4px;">
+            <button id="btnConnectRtsp" style="width:100%; margin-top:6px; background:#1a3d34; color:#9ef3c6; border:1px solid #3b6b5d; border-radius:4px; padding:6px; font-size:10px; cursor:pointer;">Connect CCTV Stream</button>
+          </div>
+          <div id="camStatusMsg" style="font-size:10px; color:#8fa8ae; margin-top:6px;">Click <b>Start Camera</b> to stream your laptop/USB webcam live into the system.</div>
+        </div>
+
+        <div class="cam-gauges">
+          <div class="cam-gauge">
+            <small>North</small>
+            <strong id="camCountN">0</strong>
+          </div>
+          <div class="cam-gauge priority-south">
+            <small>South &star;</small>
+            <strong id="camCountS">0</strong>
+          </div>
+          <div class="cam-gauge">
+            <small>East</small>
+            <strong id="camCountE">0</strong>
+          </div>
+          <div class="cam-gauge">
+            <small>West</small>
+            <strong id="camCountW">0</strong>
+          </div>
+        </div>
+
+        <div class="defense-controls">
+          <button id="btnEmergencyTest" class="btn-emergency-test" title="Inject an ambulance to test Rule 1 Preemption">&#128657; Test Rule 1: Ambulance Preemption</button>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div class="eyebrow">GROUND TRUTH LANES (SUMO)</div>
+          <div id="lanes"></div>
+        </div>
+      </section>
+
+      <!-- Live Scenario Lab -->
+      <section class="panel">
+        <div class="eyebrow">LIVE SCENARIO LAB</div>
+        <h2>Vehicle Injection</h2>
+        <div class="spawn-fields">
+          <label>Approach
+            <select id="road">
+              <option value="N">North</option>
+              <option value="E">East</option>
+              <option value="S" selected>South (Priority)</option>
+              <option value="W">West</option>
+            </select>
+          </label>
+          <label>Vehicle
+            <select id="vehicle">
+              <option value="car">Car</option>
+              <option value="bus">Bus</option>
+              <option value="truck">Truck</option>
+              <option value="moto">Motorcycle</option>
+              <option value="ambulance">Ambulance</option>
+              <option value="firetruck">Fire engine</option>
+            </select>
+          </label>
+        </div>
+        <button id="spawn" class="primary">Inject vehicle into simulation <span>&#8599;</span></button>
+        <p class="hint" role="status" id="feedback">Vehicles enter the selected approach.</p>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Performance History Graph -->
+  <section class="panel history">
+    <div>
+      <div class="eyebrow">NETWORK PERFORMANCE</div>
+      <h2>Queue Over Time</h2>
+    </div>
+    <canvas id="history" height="110" aria-label="Average queue history"></canvas>
+  </section>
+
+  <!-- FYP Defense Event Logger & Benchmark Section -->
+  <section class="panel benchmark">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div>
+        <div class="eyebrow">FYP PROJECT DEFENSE REPORTING</div>
+        <h2>Controller Benchmark &amp; Event Telemetry</h2>
+        <p class="hint">Empirical comparison across held-out scenarios and dynamic rule execution events.</p>
+      </div>
+      <div>
+        <a href="/api/export_logs" class="btn-export" target="_blank">&#128190; Export Defense Report (CSV)</a>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Controller</th>
+            <th>Avg Queue</th>
+            <th>Completed Wait</th>
+            <th>Completed Trips</th>
+            <th>Collisions / Teleports</th>
+          </tr>
+        </thead>
+        <tbody id="benchmarkRows"></tbody>
+      </table>
+    </div>
+
+    <!-- Recent Decision Logs for Defense -->
+    <div style="margin-top:22px;">
+      <div class="eyebrow">REAL-TIME DECISION AUDIT TRAIL</div>
+      <div class="table-scroll" style="max-height:220px; overflow-y:auto; margin-top:8px;">
+        <table style="font-size:11px;">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Active Rule</th>
+              <th>Phase</th>
+              <th>Duration</th>
+              <th>Avg Queue</th>
+              <th>Throughput</th>
+            </tr>
+          </thead>
+          <tbody id="auditRows">
+            <tr><td colspan="6" style="color:#789;">Awaiting first decision cycle...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    AI Smart Traffic Signal &middot; Final Year Project
+    <span>Real-Time YOLOv8 Vision &middot; Microscopic Digital Twin &middot; Emergency Preemption</span>
+  </footer>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

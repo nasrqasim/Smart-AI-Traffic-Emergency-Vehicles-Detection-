@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connections>
+    <!-- Through, right and left turns from each approach; lane 0 = inner (left-turn capable), lane 1 = outer (through/right) -->
+    <!-- North approach (N2C) -->
+    <connection from="N2C" to="C2S" fromLane="1" toLane="1"/>
+    <connection from="N2C" to="C2S" fromLane="0" toLane="0"/>
+    <connection from="N2C" to="C2E" fromLane="0" toLane="0"/>
+    <connection from="N2C" to="C2W" fromLane="1" toLane="1"/>
+
+    <!-- South approach (S2C) -->
+    <connection from="S2C" to="C2N" fromLane="1" toLane="1"/>
+    <connection from="S2C" to="C2N" fromLane="0" toLane="0"/>
+    <connection from="S2C" to="C2W" fromLane="0" toLane="0"/>
+    <connection from="S2C" to="C2E" fromLane="1" toLane="1"/>
+
+    <!-- East approach (E2C) -->
+    <connection from="E2C" to="C2W" fromLane="1" toLane="1"/>
+    <connection from="E2C" to="C2W" fromLane="0" toLane="0"/>
+    <connection from="E2C" to="C2S" fromLane="0" toLane="0"/>
+    <connection from="E2C" to="C2N" fromLane="1" toLane="1"/>
+
+    <!-- West approach (W2C) -->
+    <connection from="W2C" to="C2E" fromLane="1" toLane="1"/>
+    <connection from="W2C" to="C2E" fromLane="0" toLane="0"/>
+    <connection from="W2C" to="C2N" fromLane="0" toLane="0"/>
+    <connection from="W2C" to="C2S" fromLane="1" toLane="1"/>
+</connections>
