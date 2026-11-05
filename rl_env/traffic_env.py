@@ -109,17 +109,31 @@ except (ImportError, Exception):
             def getLanePosition(vid): return random.uniform(20.0, 220.0)
             @staticmethod
             def getVehicleClass(vid): return "emergency" if "emg" in vid else "passenger"
-            @staticmethod
-            def getPosition(vid):
-                # 4-way intersection map layout centered at 250, 250
-                routes = [
-                    (246.8, random.uniform(10, 490), 0),
-                    (253.2, random.uniform(10, 490), 180),
-                    (random.uniform(10, 490), 246.8, 90),
-                    (random.uniform(10, 490), 253.2, 270)
-                ]
-                r = routes[hash(vid) % len(routes)]
-                return (r[0], r[1])
+            _positions = {}
+            @classmethod
+            def getPosition(cls, vid):
+                import time
+                # Smooth continuous motion along approaches (North-South: x=246.8 or 253.2, East-West: y=246.8 or 253.2)
+                t = time.time() * 8.0  # gentle, realistic speed
+                h = abs(hash(vid))
+                route_id = h % 4
+                offset = (h * 37) % 500
+                if route_id == 0:
+                    # Moving South (from y=500 down towards 0)
+                    y = (500 - (t + offset) % 500)
+                    return (246.8, y)
+                elif route_id == 1:
+                    # Moving North (from y=0 up towards 500)
+                    y = ((t + offset) % 500)
+                    return (253.2, y)
+                elif route_id == 2:
+                    # Moving East (from x=0 to 500)
+                    x = ((t + offset) % 500)
+                    return (x, 246.8)
+                else:
+                    # Moving West (from x=500 to 0)
+                    x = (500 - (t + offset) % 500)
+                    return (x, 253.2)
             @staticmethod
             def getAngle(vid):
                 angles = [0.0, 90.0, 180.0, 270.0]

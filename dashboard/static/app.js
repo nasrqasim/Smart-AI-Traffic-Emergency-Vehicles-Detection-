@@ -294,7 +294,7 @@ function updateSignals(d) {
   if ($('controller').value !== (d.requested_controller || d.controller)) {
     $('controller').value = d.requested_controller || d.controller;
   }
-  $('speed').value = String(d.speed);
+  if (document.activeElement !== $('speed')) { $('speed').value = String(d.speed); }
   paused = d.status === 'paused';
   $('pause').textContent = paused ? 'Resume' : 'Pause';
   let open = [];
